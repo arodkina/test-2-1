@@ -4,7 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestSeleniumClass {
     private WebDriver driver;
@@ -17,6 +20,7 @@ public class TestSeleniumClass {
     @BeforeEach
     void setUp() {
         driver = new ChromeDriver();
+
     }
 
     @AfterEach
@@ -26,16 +30,16 @@ public class TestSeleniumClass {
     }
 
     @Test
-    public void shouldTestBe(){
+    public void shouldTestBe() throws InterruptedException {
         driver.get("http://localhost:9999");
-        driver.findElement(By.xpath("//div[@id='root']//form[@action='/']/div[1]/span//span[@class='input__box']")).sendKeys("Василий");
-        driver.findElement(By.xpath("//div[@id='root']//form[@action='/']/div[2]/span")).sendKeys("+79522865643");
-        driver.findElement(By.xpath("//div[@id='root']//form[@action='/']//label//input[@name='agreement']")).click();
-        driver.findElement(By.xpath("//div[@id='root']//form[@action='/']//button[@role='button']//span[@class='button__text']")).click();
-        String text = driver.findElement(By.xpath("/html//div[@id='root']//p[@class='paragraph paragraph_theme_alfa-on-white']")).getText();
-        assertEquals ("  Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
-    }
-
-    private void assertEquals(String s, String trim) {
+        Thread.sleep(500);
+        WebElement form = driver.findElement(By.xpath("//div[@id='root']/div[@class='App_appContainer__3jRx1']"));
+        Thread.sleep(500);
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Василий");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79522865643");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button__text")).click();
+        String text = driver.findElement(By.xpath("//div[@id='root']/div[@class='App_appContainer__3jRx1']//p[@class='paragraph paragraph_theme_alfa-on-white']")).getText();
+        assertEquals ("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
     }
 }
